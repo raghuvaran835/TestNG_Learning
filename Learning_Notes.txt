@@ -1,0 +1,145 @@
+1)How to create testNG xml file?
+
+Right click on the project -> TestNG -> Create TestNG Class
+
+2)TestNG(Testing new generation) -Annotations:
+
+@BeforeSuite
+@BeforeTest
+@BeforeClass
+@BeforeMethod
+@Test
+@AfterMethod
+@AfterClass
+@Aftertest
+@AfterSuite
+
+
+3)groupings in TestNG:
+
+@Test(groups=”title”)
+
+<groups>
+		<run>
+			<include name="Smoke"></include>
+		</run>
+</groups>
+
+
+4)How to define parameters for tests in xml
+
+<test thread-count="5" name="Personal Loan">
+		<parameter name="URL" value="https://personal_loan.com"></parameter> (This parameter can be defined in suite or test level)
+		<classes>
+			<class name="Test.Demo" />
+			<class name="Test.Demo1" />
+			<class name="Test.Demo2" />
+		</classes>
+</test> <!-- Test -->
+
+@Parameters({"URL"})
+	@Test
+	public void test_03(String url){
+		System.out.println("Test3");
+		System.out.println(url);
+	}
+
+5)how to include ,exclude testCases
+
+<test name="Car Loan">
+
+		<classes>
+			<class name="Test.Demo3">
+				<methods>
+					<exclude name="mobileLoginCarLoan"></exclude> <!--exclude only mentioned test cases -->
+					<exclude name="mobile.*"></exclude> <!--exclude the testcases which is the name starts with mobile -->
+				</methods>
+			</class>
+		</classes>
+	</test>
+
+6) Setting the Priority
+
+@Test (priority=2)
+public void getText()
+{
+driver.findElement(By.id(“id”)).getText();
+}
+@Test(priority=1)
+public void clickelement()
+{
+driver.findElement(By.id(“id”)).click();
+}
+
+7)How to define Listners in TestNG?
+
+we should create a class and that class should be implemented ITestLister.
+
+8)data provider
+
+@DataProvider
+	public Object[][] getData()
+	{
+		Object[][] data=new Object[3][2];
+		
+//		1st set data
+		data[0][0]="firstUsername";
+		data[0][1]="firstPassword";
+		
+//		2nd set data
+		data[1][0]="Second Username";
+		data[1][1]="Second Password";
+		
+//		3rd set data
+		data[2][0]="Third Username";
+		data[2][1]="Third Password";
+		
+		return data;
+	}
+	
+@Test(dataProvider = "getData")
+	public void mobileLoginHomeLoan(String uname,String password)
+	{
+		System.out.println("Mobile Login home Loan");
+		System.out.println("Username is:"+uname+"\nPassword is:"+password);
+	}
+	
+9)Enables ,timeout ,and dependsOn property
+
+@Test(enabled =true )  ->if we mentioned enables as false ,it will not execute
+	public void test_02(){
+		System.out.println("Test2");
+	}
+	
+@Test(timeOut = 3000) ->If any method in the script takes a long time to execute, then we can terminate that method using “timeout” in TestNG.
+	public void webLoginCarLoan()
+	{
+		System.out.println("web Login Car Loan");
+	}
+	
+@Test(dependsOnMethods = {"webLoginHomeLoan"})
+	public void APILoginHomeLoan()
+	{
+		System.out.println("API Login home Loan");
+	}
+	
+10)How to throw a SKIP Exception in TestNG?
+
+public void skipExc()
+{
+System.out.println("SKIP me");
+throw new skipException(“Skipping skipExc”);
+}
+}
+
+11)How to handle exceptions in TestNG?
+
+If there are some methods from which we expect some exceptions, then we can mention the exception in @Test annotation
+so that the test case does not fail.
+
+If a method is expected to have “numberFormatException” exception, then the test case will fail because of this exception if no try-catch block is specified.
+But we can do it in TestNG by using “expectedException” attribute as follows.
+
+@Test(expectedException=numberFormatException.class)
+
+Then the test case will run without failing.
